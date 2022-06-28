@@ -40,7 +40,7 @@ var documento = db.artigos.findOneAndUpdate({
                     data: ISODate('2019-09-24')
                 }
             ],
-            position: 0
+            $position: 0
         }
     }
 }, { returnNewDocument: true})
