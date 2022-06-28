@@ -1,0 +1,54 @@
+db.infoAutores.insertOne({
+    nome: "Yan Orestes",
+    email: "yan@caelum.com.br",
+    senha: "yan1234",
+    descricao: "Instrutor e desenvolvedor na Alura"
+})
+
+var autorInfo = db.infoAutores.findOne({
+    email: "yan@caelum.com.br"
+})
+
+db.artigos.insertOne({
+    autor: {
+        nome: autorInfo.nome,
+        descricao: autorInfo.descricao,
+        id_info: autorInfo._id
+    },
+    slug: "dicas-politicas-de-senha",
+    titulo: "Algumas dicas importantes sobre politicas de senha",
+    conteudo: "Conteudo aleatorio so para ter mesmo",
+    dataCriado: ISODate('2018-07-18'),
+    categorias: [
+        'Arquitetura',
+        'Programação'
+    ],
+    comentarios: []
+})
+
+
+var documento = db.artigos.findOneAndUpdate({
+    slug: "dicas-politicas-de-senha"
+}, {
+    $push: {
+        comentarios: {
+            $each: [
+                {
+                    nome: "Giovanni",
+                    email: "giovanni@alura.com.br",
+                    texto: "Achei muito legal esse artigo",
+                    data: ISODate('2019-09-24')
+                }
+            ],
+            position: 0
+        }
+    }
+}, { returnNewDocument: true})
+
+db.comentarios.insertOne({
+    id_artigo: documento._id,
+    nome: "Giovanni",
+    email: "giovanni@alura.com.br",
+    texto: "Achei muito legal esse artigo",
+    data: ISODate('2019-09-24')
+})
